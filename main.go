@@ -49,13 +49,21 @@ func parseOption() (*common.AVOption, *common.AVOption) {
 		log.Fatalf("-o is require parameter.")
 	}
 
-	sampleRate, err := strconv.Atoi(conf.SampleRate.Get(0))
-	if err != nil {
-		log.Fatalf("input sample rate illegal")
+	var (
+		sampleRate, channel = 0, 0
+		err error
+	)
+	if conf.SampleRate.Get(0) != "" {
+		sampleRate, err = strconv.Atoi(conf.SampleRate.Get(0))
+		if err != nil {
+			log.Fatalf("input sample rate illegal")
+		}
 	}
-	channel, err := strconv.Atoi(conf.Channels.Get(0))
-	if err != nil {
-		log.Fatalf("input channel illegal")
+	if conf.Channels.Get(0) != "" {
+		channel, err = strconv.Atoi(conf.Channels.Get(0))
+		if err != nil {
+			log.Fatalf("input channel illegal")
+		}
 	}
 	inOpt := &common.AVOption{
 		Path:       conf.Input,
@@ -64,17 +72,21 @@ func parseOption() (*common.AVOption, *common.AVOption) {
 		Channels:   channel,
 	}
 
-	sampleRate, err = strconv.Atoi(conf.SampleRate.Get(1))
-	if err != nil {
-		log.Fatalf("input sample rate illegal")
+	if conf.SampleRate.Get(1) != "" {
+		sampleRate, err = strconv.Atoi(conf.SampleRate.Get(1))
+		if err != nil {
+			log.Fatalf("output sample rate illegal")
+		}
 	}
-	channel, err = strconv.Atoi(conf.Channels.Get(1))
-	if err != nil {
-		log.Fatalf("input channel illegal")
+	if conf.Channels.Get(1) != "" {
+		channel, err = strconv.Atoi(conf.Channels.Get(1))
+		if err != nil {
+			log.Fatalf("output channel illegal")
+		}
 	}
 	outOpt := &common.AVOption{
-		Path:       conf.Input,
-		Format:     conf.Formats.Get(0),
+		Path:       conf.Output,
+		Format:     conf.Formats.Get(1),
 		SampleRate: sampleRate,
 		Channels:   channel,
 	}

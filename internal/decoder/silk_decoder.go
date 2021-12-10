@@ -5,7 +5,6 @@ import (
 	"github.com/google/uuid"
 	"github.com/leorusLao/AV_Converter/common"
 	"github.com/pkg/errors"
-	"os"
 	"os/exec"
 	"path/filepath"
 )
@@ -29,10 +28,10 @@ func NewSilkDecoder() Decoder {
 func (d *silkDecoder) Decode(in *common.AVOption) (out *common.AVOption, err error) {
 	var args []string
 
-	args = append(args, "-y")
 	args = append(args, in.Path)
-	outPath := filepath.Join(os.TempDir(), "conv_"+uuid.New().String()+"."+d.outOption.Format)
+	outPath := filepath.Join("./", "conv_"+uuid.New().String()+"."+d.outOption.Format)
 	args = append(args, outPath)
+	args = append(args, "-Fs_API", "16000")
 	args = append(args, "-quiet")
 
 	var outBytes bytes.Buffer
@@ -44,8 +43,11 @@ func (d *silkDecoder) Decode(in *common.AVOption) (out *common.AVOption, err err
 		return nil, errors.Wrap(errors.Errorf("error: %s, out: %s", err, outBytes.String()), "cmd.Run")
 	}
 
+	// pcm 需要指定详细参数
 	return &common.AVOption{
-		Path:   outPath,
-		Format: "s16le",
+		Path:       outPath,
+		Format:     "s16le",
+		SampleRate: 16000,
+		Channels:   1,
 	}, nil
 }

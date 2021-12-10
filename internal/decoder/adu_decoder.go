@@ -29,7 +29,6 @@ func NewAduDecoder() Decoder {
 func (d *aduDecoder) Decode(in *common.AVOption) (out *common.AVOption, err error) {
 	var args []string
 
-	args = append(args, "-y")
 	args = append(args, in.Path)
 	outPath := filepath.Join(os.TempDir(), "conv_"+uuid.New().String()+"."+d.outOption.Format)
 	args = append(args, outPath)
