@@ -8,41 +8,31 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"strconv"
 )
 
-var _ Decoder = (*defaultDecoder)(nil)
+var _ Decoder = (*silkDecoder)(nil)
 
-type defaultDecoder struct {
+type silkDecoder struct {
 	executor  string
 	outOption *common.AVOption
 }
 
-func NewDefaultDecoder() Decoder {
-	return &defaultDecoder{
-		executor: common.FFmpeg.String(),
+func NewSilkDecoder() Decoder {
+	return &silkDecoder{
+		executor: common.SilkDecoder.String(),
 		outOption: &common.AVOption{
-			Format: common.FormatWav.String(),
+			Format: common.FormatPcm.String(),
 		},
 	}
 }
 
-func (d *defaultDecoder) Decode(in *common.AVOption) (out *common.AVOption, err error) {
+func (d *silkDecoder) Decode(in *common.AVOption) (out *common.AVOption, err error) {
 	var args []string
 
-	if in.SampleRate != 0 {
-		args = append(args, "-ar", strconv.Itoa(in.SampleRate))
-	}
-	if in.Channels != 0 {
-		args = append(args, "-ac", strconv.Itoa(in.Channels))
-	}
-	if in.Format != "" {
-		args = append(args, "-f", in.Format)
-	}
-	args = append(args, "-i", in.Path)
-	args = append(args, "-f", d.outOption.Format)
+	args = append(args, in.Path)
 	outPath := filepath.Join(os.TempDir(), "conv_"+uuid.New().String()+"."+d.outOption.Format)
 	args = append(args, outPath)
+	args = append(args, "-quiet")
 
 	var outBytes bytes.Buffer
 	cmd := exec.Command(d.executor, args...)
@@ -54,6 +44,7 @@ func (d *defaultDecoder) Decode(in *common.AVOption) (out *common.AVOption, err 
 	}
 
 	return &common.AVOption{
-		Path: outPath,
+		Path:   outPath,
+		Format: "s16le",
 	}, nil
 }
