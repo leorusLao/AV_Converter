@@ -14,5 +14,9 @@ var NewDecoderFuncMap map[common.Format]NewDecoderFunc
 
 func init() {
 	NewDecoderFuncMap = make(map[common.Format]NewDecoderFunc)
-	NewDecoderFuncMap[common.FormatAmr] = NewDefaultDecoder
+	NewDecoderFuncMap[common.FormatSilk] = NewSilkDecoder
+	NewDecoderFuncMap[common.FormatBackup] = NewSilkDecoder
+	NewDecoderFuncMap[common.FormatAdu] = NewAduDecoder
+	NewDecoderFuncMap[common.FormatHzmv] = NewAduDecoder
+	NewDecoderFuncMap[common.FormatSpx] = NewSpxDecoder
 }
