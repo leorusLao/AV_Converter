@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/leorusLao/AV_Converter/config"
 	"log"
 	"os"
 )
@@ -13,7 +14,7 @@ var (
 )
 
 func main() {
-	flagSet, err := initConf()
+	flagSet, err := config.InitConf()
 	if err != nil {
 		log.Fatalf("config.InitConf err: %s", err)
 	}
@@ -23,10 +24,10 @@ func main() {
 		os.Exit(0)
 	}
 
-	fmt.Println(Conf)
+	fmt.Println(config.Conf)
 
-	fmt.Println(Conf.Formats.Get(0))
-	fmt.Println(Conf.Formats.Get(1))
+	fmt.Println(config.Conf.Formats.Get(0))
+	fmt.Println(config.Conf.Formats.Get(1))
 }
 
 func printVersion() {

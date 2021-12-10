@@ -1,4 +1,4 @@
-package main
+package config
 
 import (
 	"flag"
@@ -18,7 +18,7 @@ var (
 	flagSet *flag.FlagSet
 )
 
-func initConf() (*flag.FlagSet, error) {
+func InitConf() (*flag.FlagSet, error) {
 	flagSet = flag.NewFlagSet("AV_Converter", flag.ExitOnError)
 
 	flagSet.Bool("version", false, "print version string")
