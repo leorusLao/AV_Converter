@@ -10,7 +10,6 @@ type AVOption struct {
 	Format     string
 	SampleRate int
 	Channels   int
-	BitDepth   int
 }
 
 func newConverter() *Converter {
