@@ -20,3 +20,11 @@ func init() {
 	NewDecoderFuncMap[common.FormatHzmv] = NewAduDecoder
 	NewDecoderFuncMap[common.FormatSpx] = NewSpxDecoder
 }
+
+func UseDecoder(format string) Decoder {
+	f, ok := NewDecoderFuncMap[common.Format(format)]
+	if !ok {
+		f = NewDefaultDecoder
+	}
+	return f()
+}
