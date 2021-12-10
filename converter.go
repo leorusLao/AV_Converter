@@ -1,15 +1,10 @@
 package main
 
-type Converter struct {
-	InputOption  *AVOption
-	OutputOption *AVOption
-}
+import "github.com/leorusLao/AV_Converter/common"
 
-type AVOption struct {
-	Path       string
-	Format     string
-	SampleRate int
-	Channels   int
+type Converter struct {
+	InputOption  *common.AVOption
+	OutputOption *common.AVOption
 }
 
 func newConverter() *Converter {

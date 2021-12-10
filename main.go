@@ -9,8 +9,8 @@ import (
 )
 
 var (
-	Version         = ""
-	BuildTime       = ""
+	Version   = ""
+	BuildTime = ""
 )
 
 func main() {
