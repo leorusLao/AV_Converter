@@ -10,30 +10,29 @@ import (
 	"path/filepath"
 )
 
-var _ Decoder = (*silkDecoder)(nil)
+var _ Decoder = (*aduDecoder)(nil)
 
-type silkDecoder struct {
+type aduDecoder struct {
 	executor  string
 	outOption *common.AVOption
 }
 
-func NewSilkDecoder() Decoder {
-	return &silkDecoder{
-		executor: common.SilkDecoder.String(),
+func NewAduDecoder() Decoder {
+	return &aduDecoder{
+		executor: common.AduConvert.String(),
 		outOption: &common.AVOption{
-			Format: common.FormatPcm.String(),
+			Format: common.FormatWav.String(),
 		},
 	}
 }
 
-func (d *silkDecoder) Decode(in *common.AVOption) (out *common.AVOption, err error) {
+func (d *aduDecoder) Decode(in *common.AVOption) (out *common.AVOption, err error) {
 	var args []string
 
 	args = append(args, "-y")
 	args = append(args, in.Path)
 	outPath := filepath.Join(os.TempDir(), "conv_"+uuid.New().String()+"."+d.outOption.Format)
 	args = append(args, outPath)
-	args = append(args, "-quiet")
 
 	var outBytes bytes.Buffer
 	cmd := exec.Command(d.executor, args...)
@@ -46,6 +45,5 @@ func (d *silkDecoder) Decode(in *common.AVOption) (out *common.AVOption, err err
 
 	return &common.AVOption{
 		Path:   outPath,
-		Format: "s16le",
 	}, nil
 }

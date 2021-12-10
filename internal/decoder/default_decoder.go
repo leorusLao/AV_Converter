@@ -30,6 +30,7 @@ func NewDefaultDecoder() Decoder {
 func (d *defaultDecoder) Decode(in *common.AVOption) (out *common.AVOption, err error) {
 	var args []string
 
+	args = append(args, "-y")
 	if in.SampleRate != 0 {
 		args = append(args, "-ar", strconv.Itoa(in.SampleRate))
 	}
